@@ -6,6 +6,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f4f4f9;
+    flex-direction: column;
 }
 
 #start-screen {
@@ -41,6 +42,21 @@ body {
     background-color: #fff;
 }
 
+/* Timer, correct/incorrect guesses counters */
+#timer, #correct-guesses, #incorrect-guesses {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+/* Game-over message and restart button */
+#message {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff6347;
+    text-align: center;
+    margin-top: 20px;
+}
+
 button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -54,4 +70,9 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Layout for the restart button */
+#restart-btn {
+    display: none;
 }

@@ -5,14 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restart-btn');
     const timerElement = document.getElementById('timer');
     const gameBoard = document.getElementById('game-board');
+    const messageElement = document.getElementById('message');
+    const correctGuessesElement = document.getElementById('correct-guesses');
+    const incorrectGuessesElement = document.getElementById('incorrect-guesses');
 
     // Game Variables
     let timer;
     let timeRemaining = 60;  // example timer (in seconds)
     let incorrectGuesses = 0;
+    let correctGuesses = 0;
     const maxIncorrectGuesses = 5;
 
-    // Sample Cards (You can move this to data.js if needed)
     const cards = [
         '🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍉', '🍉',
         '🍍', '🍍', '🍓', '🍓', '🍒', '🍒', '🍑', '🍑'
@@ -24,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameScreen.style.display = 'block'; // Show game screen
         initializeGame();
         startTimer();
+        resetMessages();
     }
 
     // Function to initialize game (shuffle cards and render board)
@@ -41,6 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
             gameBoard.appendChild(cardElement);
             cardElement.addEventListener('click', handleCardClick);
         });
+
+        // Reset game variables
+        incorrectGuesses = 0;
+        correctGuesses = 0;
+        updateGuessDisplay();
+        timeRemaining = 60;
+        timerElement.textContent = `Timer: 01:00`; // Reset timer text
     }
 
     // Shuffle the array (Fisher-Yates Algorithm)
@@ -56,7 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let flippedCards = [];
     function handleCardClick(event) {
         const card = event.target;
-        if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+
+        // Only allow flipping if the card is not already flipped
+        if (flippedCards.length < 2 && !card.classList.contains('flipped') && incorrectGuesses < maxIncorrectGuesses) {
             flippedCards.push(card);
             card.classList.add('flipped');
             card.textContent = card.dataset.cardValue;
@@ -71,20 +84,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if the flipped cards match
     function checkMatch() {
         const [card1, card2] = flippedCards;
+
         if (card1.dataset.cardValue === card2.dataset.cardValue) {
             // Cards match, keep them face-up
+            correctGuesses++;
             flippedCards = [];
+            updateGuessDisplay();
+            checkWin(); // Check for win condition
         } else {
             // Cards don't match, flip them back
-            card1.textContent = '🂠';
-            card2.textContent = '🂠';
-            flippedCards = [];
+            setTimeout(() => {
+                card1.textContent = '🂠';
+                card2.textContent = '🂠';
+                flippedCards = [];
+            }, 500); // Delay flipping back to make it more visible
+
             incorrectGuesses++;
+            updateGuessDisplay();
 
             // Check if player exceeded incorrect guess limit
             if (incorrectGuesses >= maxIncorrectGuesses) {
                 endGame('Game Over: Too many incorrect guesses!');
             }
+        }
+    }
+
+    // Check if all pairs are matched (win condition)
+    function checkWin() {
+        if (correctGuesses === cards.length / 2) {
+            endGame('You Win! All pairs matched!');
         }
     }
 
@@ -105,16 +133,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // End the game (win or lose)
     function endGame(message) {
         clearInterval(timer);
-        alert(message); // Show end message
+        displayMessage(message);
         restartButton.style.display = 'block'; // Show restart button
+    }
+
+    // Display a message
+    function displayMessage(message) {
+        messageElement.textContent = message;
+        messageElement.style.display = 'block';
+    }
+
+    // Reset the message display
+    function resetMessages() {
+        messageElement.style.display = 'none';
+    }
+
+    // Update the correct and incorrect guesses display
+    function updateGuessDisplay() {
+        correctGuessesElement.textContent = `Correct Guesses: ${correctGuesses}`;
+        incorrectGuessesElement.textContent = `Incorrect Guesses: ${incorrectGuesses}`;
     }
 
     // Restart the game
     restartButton.addEventListener('click', () => {
-        timeRemaining = 60;
-        incorrectGuesses = 0;
         restartButton.style.display = 'none';
-        startGame(); // Restart game
+        gameScreen.style.display = 'none';
+        startScreen.style.display = 'block';
+        resetMessages();
     });
 
     // Start button event listener
