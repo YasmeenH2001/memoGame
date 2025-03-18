@@ -180,3 +180,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start button event listener
     startButton.addEventListener('click', startGame);
 });
+
+document.getElementById("restart-btn").addEventListener("click", function() {
+    location.reload();
+});
+
+document.getElementById("start-btn").addEventListener("click", function() {
+    document.getElementById("start-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "block";
+    startGame();
+});
+
+function endGame(won) {
+    if (won) {
+        document.getElementById("win-face").style.display = "block";  // Show happy face
+        document.getElementById("lose-face").style.display = "none";
+    } else {
+        document.getElementById("lose-face").style.display = "block";  // Show sad face
+        document.getElementById("win-face").style.display = "none";
+    }
+}

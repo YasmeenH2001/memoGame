@@ -164,35 +164,12 @@ button:hover {
 }
 
 /* Win/Loss Faces */
-.result-face {
-    margin-top: 20px;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Friendly faces for win and loss */
-#win-face {
-    background-image: url('assets/images/happy.png'); /* Smiley face */
-    background-size: cover;
-    background-position: center;
-}
-
-
-#lose-face {
-       background-image: url('assets/images/sad.png'); /* Sad face */
-    background-size: cover;
-    background-position: center;
-}
-
-/* Style for win/lose faces */
 #win-face, #lose-face {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     margin-top: 20px;
+    display: none; /* Initially hidden */
 }
-
 
 /* Media query for responsiveness */
 @media (max-width: 600px) {
