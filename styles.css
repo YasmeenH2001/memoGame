@@ -8,8 +8,9 @@ body {
     margin: 0;
     background-color: #f0f8ff; /* Light blue background */
     flex-direction: column;
-    background-image: url('assets/images/back1.jpg');
-
+    background-image: url('assets/images/back1.jpg'); /* Set the first background image */
+    background-size: cover;
+    background-position: center;
 }
 
 /* Start Screen */
@@ -17,8 +18,8 @@ body {
     text-align: center;
     padding: 20px;
     background-color: #ffeb3b; /* Bright yellow background */
-    background-image: url('assets/images/back2.png');
-        background-size: cover;
+    background-image: url('assets/images/back2.png'); /* Set the second background image */
+    background-size: cover;
     background-position: center;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -176,16 +177,22 @@ button:hover {
     background-image: url('assets/images/happy.png'); /* Smiley face */
     background-size: cover;
     background-position: center;
-
-
 }
+
 
 #lose-face {
-    background-image: url('assets/images/sad.png'); /* Sad face */
+       background-image: url('assets/images/sad.png'); /* Sad face */
     background-size: cover;
     background-position: center;
-    
 }
+
+/* Style for win/lose faces */
+#win-face, #lose-face {
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+}
+
 
 /* Media query for responsiveness */
 @media (max-width: 600px) {
@@ -199,13 +206,3 @@ button:hover {
         font-size: 1.5em;
     }
 }
-
-/* Style for win/lose faces */
-#win-face, #lose-face {
-    width: 50px;
-    height: 50px;
-    margin-top: 20px;
-}
-
-
-
