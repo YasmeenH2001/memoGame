@@ -176,12 +176,15 @@ button:hover {
     background-image: url('assets/images/happy.png'); /* Smiley face */
     background-size: cover;
     background-position: center;
+
+
 }
 
 #lose-face {
     background-image: url('assets/images/sad.png'); /* Sad face */
     background-size: cover;
     background-position: center;
+    
 }
 
 /* Media query for responsiveness */
@@ -195,16 +198,6 @@ button:hover {
         height: 80px;
         font-size: 1.5em;
     }
-}
-
-/* Start screen background */
-#start-screen {
-    text-align: center;
-    background-image: url('assets/images/back2.png'); 
-    background-size: cover;
-    background-position: center;
-    padding: 20px;
-    color: white;
 }
 
 /* Style for win/lose faces */
