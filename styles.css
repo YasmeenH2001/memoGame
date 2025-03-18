@@ -8,6 +8,8 @@ body {
     margin: 0;
     background-color: #f0f8ff; /* Light blue background */
     flex-direction: column;
+    background-image: url('assets/images/back1.jpg');
+
 }
 
 /* Start Screen */
@@ -15,8 +17,8 @@ body {
     text-align: center;
     padding: 20px;
     background-color: #ffeb3b; /* Bright yellow background */
-    background-image: url('https://www.transparenttextures.com/patterns/flower-dust.png'); /* Flower background image */
-    background-size: cover;
+    background-image: url('assets/images/back2.png');
+        background-size: cover;
     background-position: center;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -171,13 +173,13 @@ button:hover {
 
 /* Friendly faces for win and loss */
 #win-face {
-    background-image: url('https://www.pngitem.com/pimgs/m/119-1195025_smiley-face-png.png'); /* Smiley face */
+    background-image: url('assets/images/happy.png'); /* Smiley face */
     background-size: cover;
     background-position: center;
 }
 
 #lose-face {
-    background-image: url('https://www.pngitem.com/pimgs/m/99-993043_sad-face-png-sad-face-transparent-png.png'); /* Sad face */
+    background-image: url('assets/images/sad.png'); /* Sad face */
     background-size: cover;
     background-position: center;
 }
@@ -198,7 +200,7 @@ button:hover {
 /* Start screen background */
 #start-screen {
     text-align: center;
-    background-image: url('flowers-background.jpg'); /* Your flower background image */
+    background-image: url('assets/images/back2.png'); 
     background-size: cover;
     background-position: center;
     padding: 20px;
@@ -209,7 +211,8 @@ button:hover {
 #win-face, #lose-face {
     width: 50px;
     height: 50px;
-    display: none;
     margin-top: 20px;
 }
+
+
 
