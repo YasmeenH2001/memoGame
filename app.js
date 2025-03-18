@@ -181,22 +181,38 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', startGame);
 });
 
-document.getElementById("restart-btn").addEventListener("click", function() {
-    location.reload();
-});
-
+// Add event listener for the start button
 document.getElementById("start-btn").addEventListener("click", function() {
     document.getElementById("start-screen").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-    startGame();
+    startGame(); // Assuming startGame initializes your game logic
 });
 
+// Function to handle the game ending
 function endGame(won) {
+    // Hide both faces initially
+    document.getElementById("win-face").style.display = "none";
+    document.getElementById("lose-face").style.display = "none";
+
+    // Show the correct face based on win/lose status
     if (won) {
-        document.getElementById("win-face").style.display = "block";  // Show happy face
-        document.getElementById("lose-face").style.display = "none";
+        document.getElementById("win-face").style.display = "block"; // Show happy face
     } else {
-        document.getElementById("lose-face").style.display = "block";  // Show sad face
-        document.getElementById("win-face").style.display = "none";
+        document.getElementById("lose-face").style.display = "block"; // Show sad face
     }
+
+    // Optionally, show a message
+    document.getElementById("message").innerText = won ? "You Win!" : "You Lose!";
+    document.getElementById("message").style.display = "block";
 }
+
+// Example to trigger the end of the game (use your own logic here):
+// Simulating a win after 2 seconds
+setTimeout(() => {
+    endGame(true); // Call endGame() with `true` for a win
+}, 2000);
+
+// Simulating a loss after 4 seconds
+setTimeout(() => {
+    endGame(false); // Call endGame() with `false` for a loss
+}, 4000);
