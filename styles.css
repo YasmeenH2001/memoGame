@@ -6,42 +6,78 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #f0f8ff;
     flex-direction: column;
-    background-image: url('assets/images/back1.jpg');
+    background-image: url('assets/images/bk7.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Ensure the background stays fixed */
 }
 
-/* Add container for header and main */
-#header-main {
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-}
-
+/* Start Screen */
 #start-screen {
     text-align: center;
     padding: 20px;
     background-color: #ffeb3b;
-    background-image: url('assets/images/back2.png');
+    background-image: url('assets/images/back3.png'); /* Ensure this file is present */
     background-size: cover;
     background-position: center;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+#start-screen h1 {
+    color: #ff6347;
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#start-screen p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Game Screen */
 #game-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8); /* Add some transparency to allow background visibility */
+    background-color: #fff;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Fix card flip speed */
+#timer,
+#correct-guesses,
+#incorrect-guesses {
+    font-size: 1.5em;
+    margin-top: 10px;
+    color: #333;
+}
+
+#timer {
+    font-weight: bold;
+    color: #ff6347;
+}
+
+#correct-guesses {
+    color: #32cd32;
+}
+
+#incorrect-guesses {
+    color: #ff4500;
+}
+
+/* Game Board */
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 10px;
+    margin-top: 20px;
+}
+
 .card {
     width: 100px;
     height: 100px;
@@ -51,31 +87,40 @@ body {
     align-items: center;
     font-size: 2em;
     cursor: pointer;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease; /* Faster flip */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Add transition for flip effect */
 .card.flipped {
-    background-color: #fff;
-    color: #333;
-    transform: rotateY(180deg);
+    background-color: #ffffff;
 }
 
-/* Adjust win/loss face visibility */
-#win-face, #lose-face {
-    width: 100px;
-    height: 100px;
+/* Messages */
+#message {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
     margin-top: 20px;
-    display: none;
-    transition: opacity 0.3s ease-in-out;
 }
 
-#win-face {
+#win-face, #lose-face {
     display: none;
+    margin-top: 20px;
+    width: 50px;
+    height: 50px;
 }
 
-#lose-face {
-    display: none;
+/* Buttons */
+button {
+    font-size: 1.5em;
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff4500;
 }
