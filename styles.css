@@ -8,7 +8,7 @@ body {
     margin: 0;
     background-color: #f0f8ff;
     flex-direction: column;
-    background-image: url('assets/images/bk7.jpg');
+    background-image: url('assets/bk7.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -18,7 +18,7 @@ body {
     text-align: center;
     padding: 20px;
     background-color: #ffeb3b;
-    background-image: url('assets/images/back3.png'); /* Ensure this file is present */
+    background-image: url('assets/back3.png'); /* Ensure this file is present */
     background-size: cover;
     background-position: center;
     border-radius: 15px;
