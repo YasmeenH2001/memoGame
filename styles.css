@@ -11,16 +11,14 @@ body {
     background-image: url('assets/bk7.jpg');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed; /* Ensures background remains fixed while scrolling */
 }
 
 /* Start Screen */
 #start-screen {
     text-align: center;
     padding: 20px;
-    background-color: #ffeb3b;
-    background-image: url('assets/back3.png'); /* Ensure this file is present */
-    background-size: cover;
-    background-position: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -29,7 +27,6 @@ body {
     color: #ff6347;
     font-size: 3em;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #start-screen p {
@@ -43,10 +40,50 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 10px;
+    margin-top: 20px;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    background-color: #ffeb3b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.card.flipped {
+    background-color: #ffffff;
+}
+
+/* Button Styling */
+button {
+    font-size: 1.5em;
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff4500;
 }
 
 #timer,
@@ -70,32 +107,24 @@ body {
     color: #ff4500;
 }
 
-/* Game Board */
-#game-board {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    grid-gap: 10px;
+/* Buttons Styling */
+#restart-btn, #exit-btn {
     margin-top: 20px;
+    margin-bottom: 30px;
 }
 
-.card {
-    width: 100px;
-    height: 100px;
-    background-color: #ffeb3b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2em;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Adjustments to Button Positions */
+#game-screen button {
+    position: relative;
+    z-index: 10;
 }
 
-.card.flipped {
-    background-color: #ffffff;
+/* Adding a Semi-transparent Background to the Whole Game Screen */
+#game-screen {
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
-/* Messages */
+/* Messages and Faces */
 #message {
     font-size: 2em;
     font-weight: bold;
@@ -103,24 +132,38 @@ body {
     margin-top: 20px;
 }
 
-#win-face, #lose-face {
-    display: none;
-    margin-top: 20px;
-    width: 50px;
-    height: 50px;
+.face-image {
+    width: auto;
+    height: auto;
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: contain;
 }
 
-/* Buttons */
-button {
-    font-size: 1.5em;
+/* Level Selection Screen */
+#level-selection-screen {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional Styling */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.level-button {
     background-color: #ff6347;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #ff4500;
+    font-size: 1.5em;
+    transition: background-color 0.3s ease;
 }
