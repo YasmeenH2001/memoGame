@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const welcomeScreen = document.getElementById('welcome-screen');
     const levelSelectionScreen = document.getElementById('level-selection-screen');
-    const startScreen = document.getElementById('start-screen');
     const gameScreen = document.getElementById('game-screen');
     const startButton = document.getElementById('start-btn');
+    const startLevelButton = document.getElementById('start-level-btn');
     const restartButton = document.getElementById('restart-btn');
     const exitButton = document.getElementById('exit-btn');
     const timerElement = document.getElementById('timer');
@@ -14,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const correctGuessesElement = document.getElementById('correct-guesses');
     const incorrectGuessesElement = document.getElementById('incorrect-guesses');
 
-    // Game Variables
     let timer;
     let timeRemaining;
     let incorrectGuesses = 0;
@@ -25,48 +25,56 @@ document.addEventListener('DOMContentLoaded', () => {
     let flippedCards = [];
     let matchedCards = [];
 
-    // Sample Cards (emoji)
-    const cardValues = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🍑'];
+    const cardValues = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🍑', '🥝', '🥥'];
 
-    // Level Selection Events
+    startButton.addEventListener('click', () => {
+        welcomeScreen.style.display = 'none';
+        levelSelectionScreen.style.display = 'block';
+    });
+
     document.getElementById('easy-btn').addEventListener('click', () => setLevel('easy'));
     document.getElementById('medium-btn').addEventListener('click', () => setLevel('medium'));
     document.getElementById('hard-btn').addEventListener('click', () => setLevel('hard'));
 
-    // Set the game level (Easy, Medium, Hard)
+    startLevelButton.addEventListener('click', () => {
+        levelSelectionScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+    });
+
     function setLevel(level) {
         levelSelectionScreen.style.display = 'none';
-        startScreen.style.display = 'block';
+        gameScreen.style.display = 'block';
+        startGame(level);
+    }
 
+    function startGame(level) {
         if (level === 'easy') {
             gridSize = 4;
             timeRemaining = 60;
+            maxIncorrectGuesses = 4;
+            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 12));
+            gameBoard.style.gridTemplateColumns = 'repeat(4, 100px)';
+        } else if (level === 'medium') {
+            gridSize = 4;
+            timeRemaining = 50;
             maxIncorrectGuesses = 5;
             cards = shuffleArray([...cardValues, ...cardValues].slice(0, 16));
-        } else if (level === 'medium') {
-            gridSize = 6;
-            timeRemaining = 45;
-            maxIncorrectGuesses = 6;
-            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 36));
+            gameBoard.style.gridTemplateColumns = 'repeat(4, 100px)';
         } else if (level === 'hard') {
-            gridSize = 8;
-            timeRemaining = 30;
-            maxIncorrectGuesses = 8;
-            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 64));
+            gridSize = 5;
+            timeRemaining = 40;
+            maxIncorrectGuesses = 6;
+            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 20));
+            gameBoard.style.gridTemplateColumns = 'repeat(5, 100px)';
         }
-    }
 
-    // Start the game
-    function startGame() {
-        startScreen.style.display = 'none';
-        gameScreen.style.display = 'block';
         generateGameBoard();
         startTimer();
         restartButton.addEventListener('click', restartGame);
         exitButton.addEventListener('click', exitGame);
+        updateStats();
     }
 
-    // Generate the game board
     function generateGameBoard() {
         gameBoard.innerHTML = '';
         cards.forEach((cardValue, index) => {
@@ -79,11 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Flip card function
     function flipCard() {
-        if (flippedCards.length >= 2) return; // Avoid more than two cards being flipped
+        if (flippedCards.length >= 2 || incorrectGuesses >= maxIncorrectGuesses) return;
         const card = this;
-
         if (flippedCards.includes(card) || card.classList.contains('flipped')) return;
 
         card.classList.add('flipped');
@@ -91,35 +97,38 @@ document.addEventListener('DOMContentLoaded', () => {
         flippedCards.push(card);
 
         if (flippedCards.length === 2) {
-            setTimeout(checkMatch, 500); // Check for match after 0.5 seconds
+            setTimeout(checkMatch, 300);
         }
     }
 
-    // Check for a match
     function checkMatch() {
         const [firstCard, secondCard] = flippedCards;
         if (firstCard.getAttribute('data-value') === secondCard.getAttribute('data-value')) {
             matchedCards.push(firstCard, secondCard);
             correctGuesses++;
-            correctGuessesElement.textContent = `Correct Guesses: ${correctGuesses}`;
+            firstCard.classList.add('matched');
+            secondCard.classList.add('matched');
             if (matchedCards.length === cards.length) {
                 endGame('You win!', true);
             }
         } else {
             incorrectGuesses++;
-            incorrectGuessesElement.textContent = `Incorrect Guesses: ${incorrectGuesses}`;
-            // Flip back the cards after a short delay
             setTimeout(() => {
                 firstCard.classList.remove('flipped');
                 secondCard.classList.remove('flipped');
-            }, 1000); // Wait for 1 second before flipping them back
+                firstCard.textContent = '';
+                secondCard.textContent = '';
+            }, 700);
+            if (incorrectGuesses >= maxIncorrectGuesses) {
+                endGame('You lost!', false);
+            }
         }
-
         flippedCards = [];
+        updateStats();
     }
 
-    // Timer function
     function startTimer() {
+        timerElement.textContent = `Timer: ${timeRemaining}`;
         timer = setInterval(() => {
             timeRemaining--;
             timerElement.textContent = `Timer: ${timeRemaining}`;
@@ -130,37 +139,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // End the game
+    function updateStats() {
+        correctGuessesElement.textContent = `Correct Guesses: ${correctGuesses}`;
+        incorrectGuessesElement.textContent = `Incorrect Guesses: ${incorrectGuesses}`;
+    }
+
     function endGame(message, isWin) {
         clearInterval(timer);
         messageElement.textContent = message;
-        restartButton.style.display = 'block';
-        exitButton.style.display = 'block';
-
-        if (isWin) {
-            winFace.style.display = 'block';
-            loseFace.style.display = 'none';
-        } else {
-            winFace.style.display = 'none';
-            loseFace.style.display = 'block';
-        }
-
+        restartButton.style.display = 'inline-block';
+        exitButton.style.display = 'inline-block';
+        winFace.style.display = isWin ? 'block' : 'none';
+        loseFace.style.display = isWin ? 'none' : 'block';
         finalScore.textContent = `Correct Guesses: ${correctGuesses}, Incorrect Guesses: ${incorrectGuesses}`;
     }
 
-    // Restart the game
     function restartGame() {
         gameScreen.style.display = 'none';
         levelSelectionScreen.style.display = 'block';
+        resetGame();
     }
 
-    // Exit the game
     function exitGame() {
-        levelSelectionScreen.style.display = 'block';
+        welcomeScreen.style.display = 'block';
         gameScreen.style.display = 'none';
+        resetGame();
     }
 
-    // Shuffle array function
+    function resetGame() {
+        incorrectGuesses = 0;
+        correctGuesses = 0;
+        matchedCards = [];
+        flippedCards = [];
+        gameBoard.innerHTML = '';
+        messageElement.textContent = '';
+        finalScore.textContent = '';
+        winFace.style.display = 'none';
+        loseFace.style.display = 'none';
+        restartButton.style.display = 'none';
+        exitButton.style.display = 'none';
+    }
+
     function shuffleArray(arr) {
         let shuffled = [...arr];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -169,7 +188,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return shuffled;
     }
-
-    // Start the game
-    startButton.addEventListener('click', startGame);
 });
