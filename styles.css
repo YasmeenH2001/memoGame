@@ -16,7 +16,7 @@ body {
 #welcome-screen, #level-selection-screen, #game-screen {
     text-align: center;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(245, 245, 245, 0.75);
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 10px;
