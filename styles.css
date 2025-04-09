@@ -1,194 +1,140 @@
-/* Global styles */
 body {
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Friendly font */
+    font-family: 'Comic Sans MS', cursive, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f8ff; /* Light blue background */
+    background-color: #f0f8ff;
     flex-direction: column;
-    background-image: url('assets/images/back1.jpg'); /* Set the first background image */
+    background-image: url('assets/bk6.jpg');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 
-/* Start Screen */
-#start-screen {
+#welcome-screen, #level-selection-screen, #game-screen {
     text-align: center;
     padding: 20px;
-    background-color: #ffeb3b; /* Bright yellow background */
-    background-image: url('assets/images/back2.png'); /* Set the second background image */
-    background-size: cover;
-    background-position: center;
+    background-color: rgba(245, 245, 245, 0.75);
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 10px;
 }
 
-#start-screen h1 {
-    color: #ff6347; /* Tomato color */
-    font-size: 3em;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for the title */
-}
-
-#start-screen p {
-    font-size: 1.2em;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* Game Screen */
 #game-screen {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
-#timer,
-#correct-guesses,
-#incorrect-guesses {
-    font-size: 1.5em;
-    margin-top: 10px;
-    color: #333;
+#stats {
+    font-size: 24px;
+    line-height: 1.8;
+    color: #000;
+    min-width: 200px;
 }
 
 #timer {
     font-weight: bold;
-    color: #ff6347; /* Tomato */
+    color: #ff6347;
 }
 
 #correct-guesses {
-    color: #32cd32; /* Lime green */
+    color: #32cd32;
 }
 
 #incorrect-guesses {
-    color: #ff4500; /* Orange red */
+    color: #ff4500;
 }
 
-/* Game Board */
 #game-board {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
-    grid-gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    justify-content: center;
+    grid-auto-rows: 100px;
 }
+
 
 .card {
     width: 100px;
     height: 100px;
-    background-color: #ffeb3b; /* Bright yellow */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    text-align: center;
     font-size: 2em;
+    line-height: 100px;
     cursor: pointer;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
-/* Card flip effects */
-.card.flipped {
+.flipped {
     background-color: #fff;
-    color: #333;
-    transform: rotateY(180deg);
 }
 
-/* Card hover effect */
-.card:hover {
-    transform: scale(1.1);
-}
-
-/* Buttons */
-button {
-    background-color: #ff6347; /* Tomato color */
+.card.matched {
+    background-color: #32cd32;
+    border-color: #28a745;
     color: white;
+}
+
+button {
     font-size: 1.2em;
-    padding: 12px 24px;
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
+    margin: 10px 5px;
 }
 
 button:hover {
-    background-color: #ff4500; /* Darker tomato on hover */
+    background-color: #ff4500;
 }
 
-/* Restart button */
-#restart-btn {
-    background-color: #32cd32; /* Lime green for restart */
-    display: none;
-}
-
-#restart-btn:hover {
-    background-color: #228b22; /* Darker green for hover */
-}
-
-/* Game Over message */
 #message {
-    font-size: 1.5em;
-    color: #ff6347; /* Tomato color */
-    margin-top: 20px;
+    font-size: 2em;
     font-weight: bold;
-}
-
-/* Game Over section */
-#game-over {
-    background-color: #f9e0d0; /* Light peach background */
-    border-radius: 15px;
-    padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-#game-over h1 {
-    color: #ff6347;
-}
-
-#game-over p {
-    font-size: 1.2em;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-#game-over #final-score {
-    font-weight: bold;
-    color: #32cd32; /* Lime green */
-}
-
-/* Win/Loss Faces */
-#win-face, #lose-face {
-    width: 100px;
-    height: 100px;
     margin-top: 20px;
-    display: none; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out;
 }
 
-#win-face {
-    display: none; /* Initially hidden */
+#win-face, #lose-face {
+    display: none;
+    text-align: center;
+    font-size: 4em;
+    margin: 20px 0;
 }
 
-#lose-face {
-    display: none; /* Initially hidden */
+#restart-btn, #exit-btn {
+    display: none;
+    margin-top: 20px;
 }
 
-/* Media query for responsiveness */
-@media (max-width: 600px) {
-    #game-board {
-        grid-template-columns: repeat(4, 80px); /* Smaller cards on small screens */
-    }
+.face-image {
+    width: auto;
+    height: auto;
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: contain;
+}
 
-    .card {
-        width: 80px;
-        height: 80px;
-        font-size: 1.5em;
-    }
+.level-button {
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: background-color 0.3s ease;
+}
+.level-button:hover {
+    background-color: #ff4500;
 }

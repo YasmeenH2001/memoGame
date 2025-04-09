@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const startScreen = document.getElementById('start-screen');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const levelSelectionScreen = document.getElementById('level-selection-screen');
     const gameScreen = document.getElementById('game-screen');
     const startButton = document.getElementById('start-btn');
+    const startLevelButton = document.getElementById('start-level-btn');
     const restartButton = document.getElementById('restart-btn');
+    const exitButton = document.getElementById('exit-btn');
     const timerElement = document.getElementById('timer');
     const gameBoard = document.getElementById('game-board');
     const messageElement = document.getElementById('message');
@@ -11,208 +14,178 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScore = document.getElementById('final-score');
     const correctGuessesElement = document.getElementById('correct-guesses');
     const incorrectGuessesElement = document.getElementById('incorrect-guesses');
-    
-    // Game Variables
+
     let timer;
-    let timeRemaining = 60; // example timer (in seconds)
+    let timeRemaining;
     let incorrectGuesses = 0;
     let correctGuesses = 0;
-    const maxIncorrectGuesses = 5;
-    
-    // Sample Cards
-    const cards = [
-        '🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍉', '🍉',
-        '🍍', '🍍', '🍓', '🍓', '🍒', '🍒', '🍑', '🍑'
-    ];
-    
-    // Function to start the game
-    function startGame() {
-        startScreen.style.display = 'none'; // Hide start screen
-        gameScreen.style.display = 'block'; // Show game screen
-        initializeGame();
-        startTimer();
-        resetMessages(); // Reset any messages when the game starts
-    }
-
-    // Function to initialize game (shuffle cards and render board)
-    function initializeGame() {
-        // Shuffle cards
-        const shuffledCards = shuffleArray(cards);
-    
-        // Create card elements
-        gameBoard.innerHTML = ''; // Clear existing game board
-        shuffledCards.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.classList.add('card');
-            cardElement.dataset.cardValue = card;
-            cardElement.textContent = '🂠'; // Initial face-down card
-            gameBoard.appendChild(cardElement);
-            cardElement.addEventListener('click', handleCardClick);
-        });
-    
-        // Reset game variables
-        incorrectGuesses = 0;
-        correctGuesses = 0;
-        updateGuessDisplay(); // Update the display
-        timeRemaining = 60;
-        timerElement.textContent = `Timer: 01:00`; // Reset timer text
-    }
-
-    // Shuffle the array (Fisher-Yates Algorithm)
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    // Handle card click
+    let maxIncorrectGuesses;
+    let gridSize;
+    let cards;
     let flippedCards = [];
-    function handleCardClick(event) {
-        const card = event.target;
+    let matchedCards = [];
 
-        // Flip the card as long as it has not been flipped yet
-        flippedCards.push(card);
+    const cardValues = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🍑', '🥝', '🥥'];
+
+    startButton.addEventListener('click', () => {
+        welcomeScreen.style.display = 'none';
+        levelSelectionScreen.style.display = 'block';
+    });
+
+    document.getElementById('easy-btn').addEventListener('click', () => setLevel('easy'));
+    document.getElementById('medium-btn').addEventListener('click', () => setLevel('medium'));
+    document.getElementById('hard-btn').addEventListener('click', () => setLevel('hard'));
+
+    startLevelButton.addEventListener('click', () => {
+        levelSelectionScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+    });
+
+    function setLevel(level) {
+        levelSelectionScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+        startGame(level);
+    }
+
+    function startGame(level) {
+        if (level === 'easy') {
+            gridSize = 4;
+            timeRemaining = 60;
+            maxIncorrectGuesses = 4;
+            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 12));
+            gameBoard.style.gridTemplateColumns = 'repeat(4, 100px)';
+        } else if (level === 'medium') {
+            gridSize = 4;
+            timeRemaining = 50;
+            maxIncorrectGuesses = 5;
+            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 16));
+            gameBoard.style.gridTemplateColumns = 'repeat(4, 100px)';
+        } else if (level === 'hard') {
+            gridSize = 5;
+            timeRemaining = 40;
+            maxIncorrectGuesses = 6;
+            cards = shuffleArray([...cardValues, ...cardValues].slice(0, 20));
+            gameBoard.style.gridTemplateColumns = 'repeat(5, 100px)';
+        }
+
+        generateGameBoard();
+        startTimer();
+        restartButton.addEventListener('click', restartGame);
+        exitButton.addEventListener('click', exitGame);
+        updateStats();
+    }
+
+    function generateGameBoard() {
+        gameBoard.innerHTML = '';
+        cards.forEach((cardValue, index) => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.setAttribute('data-id', index);
+            card.setAttribute('data-value', cardValue);
+            card.addEventListener('click', flipCard);
+            gameBoard.appendChild(card);
+        });
+    }
+
+    function flipCard() {
+        if (flippedCards.length >= 2 || incorrectGuesses >= maxIncorrectGuesses) return;
+        const card = this;
+        if (flippedCards.includes(card) || card.classList.contains('flipped')) return;
+
         card.classList.add('flipped');
-        card.textContent = card.dataset.cardValue;
+        card.textContent = card.getAttribute('data-value');
+        flippedCards.push(card);
 
-        // Check if two cards are flipped
         if (flippedCards.length === 2) {
-            setTimeout(() => checkMatch(), 1000);
+            setTimeout(checkMatch, 300);
         }
     }
 
-    // Check if the flipped cards match
     function checkMatch() {
-        const [card1, card2] = flippedCards;
-    
-        if (card1.dataset.cardValue === card2.dataset.cardValue) {
-            // Cards match, keep them face-up
+        const [firstCard, secondCard] = flippedCards;
+        if (firstCard.getAttribute('data-value') === secondCard.getAttribute('data-value')) {
+            matchedCards.push(firstCard, secondCard);
             correctGuesses++;
-            flippedCards = [];
-            updateGuessDisplay(); // Update the display
-            checkWin(); // Check for win condition
+            firstCard.classList.add('matched');
+            secondCard.classList.add('matched');
+            if (matchedCards.length === cards.length) {
+                endGame('You win!', true);
+            }
         } else {
-            // Cards don't match, flip them back
-            setTimeout(() => {
-                card1.textContent = '🂠';
-                card2.textContent = '🂠';
-                flippedCards = [];
-            }, 500); // Delay flipping back to make it more visible
-    
             incorrectGuesses++;
-            updateGuessDisplay(); // Update the display
-    
-            // Check if player exceeded incorrect guess limit
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                firstCard.textContent = '';
+                secondCard.textContent = '';
+            }, 700);
             if (incorrectGuesses >= maxIncorrectGuesses) {
-                endGame('Game Over: Too many incorrect guesses!', false);
+                endGame('You lost!', false);
             }
         }
+        flippedCards = [];
+        updateStats();
     }
 
-    // Check if all pairs are matched (win condition)
-    function checkWin() {
-        if (correctGuesses === cards.length / 2) {
-            endGame('You Win! All pairs matched!', true);
-        }
-    }
-
-    // Start the timer
     function startTimer() {
+        timerElement.textContent = `Timer: ${timeRemaining}`;
         timer = setInterval(() => {
             timeRemaining--;
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            timerElement.textContent = `Timer: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
+            timerElement.textContent = `Timer: ${timeRemaining}`;
             if (timeRemaining <= 0) {
-                endGame('Game Over: Time is up!', false);
+                clearInterval(timer);
+                endGame('Time’s up!', false);
             }
         }, 1000);
     }
 
-    // End the game (win or lose)
-    function endGame(message, isWin) {
-        clearInterval(timer);
-        displayMessage(message); // Show end message
-        restartButton.style.display = 'block'; // Show restart button
-        
-        // Show the correct face based on win/lose
-        if (isWin) {
-            winFace.style.display = 'block';
-            loseFace.style.display = 'none';
-        } else {
-            winFace.style.display = 'none';
-            loseFace.style.display = 'block';
-        }
-
-        finalScore.textContent = `Correct Guesses: ${correctGuesses}, Incorrect Guesses: ${incorrectGuesses}`;
-    }
-
-    // Display a message
-    function displayMessage(message) {
-        messageElement.textContent = message;
-        messageElement.style.display = 'block';
-    }
-
-    // Reset the message display
-    function resetMessages() {
-        messageElement.style.display = 'none';
-        winFace.style.display = 'none';
-        loseFace.style.display = 'none';
-    }
-
-    // Update the correct and incorrect guesses display
-    function updateGuessDisplay() {
+    function updateStats() {
         correctGuessesElement.textContent = `Correct Guesses: ${correctGuesses}`;
         incorrectGuessesElement.textContent = `Incorrect Guesses: ${incorrectGuesses}`;
     }
 
-    // Restart the game
-    restartButton.addEventListener('click', () => {
-        restartButton.style.display = 'none'; // Hide the restart button
-        gameScreen.style.display = 'none'; // Hide game screen
-        startScreen.style.display = 'block'; // Show start screen again
-        resetMessages();  // Reset any messages when restarting
-    });
-
-    // Start button event listener
-    startButton.addEventListener('click', startGame);
-});
-
-// Add event listener for the start button
-document.getElementById("start-btn").addEventListener("click", function() {
-    document.getElementById("start-screen").style.display = "none";
-    document.getElementById("game-screen").style.display = "block";
-    startGame(); // Assuming startGame initializes your game logic
-});
-
-// Function to handle the game ending
-function endGame(won) {
-    // Hide both faces initially
-    document.getElementById("win-face").style.display = "none";
-    document.getElementById("lose-face").style.display = "none";
-
-    // Show the correct face based on win/lose status
-    if (won) {
-        document.getElementById("win-face").style.display = "block"; // Show happy face
-    } else {
-        document.getElementById("lose-face").style.display = "block"; // Show sad face
+    function endGame(message, isWin) {
+        clearInterval(timer);
+        messageElement.textContent = message;
+        restartButton.style.display = 'inline-block';
+        exitButton.style.display = 'inline-block';
+        winFace.style.display = isWin ? 'block' : 'none';
+        loseFace.style.display = isWin ? 'none' : 'block';
+        finalScore.textContent = `Correct Guesses: ${correctGuesses}, Incorrect Guesses: ${incorrectGuesses}`;
     }
 
-    // Optionally, show a message
-    document.getElementById("message").innerText = won ? "You Win!" : "You Lose!";
-    document.getElementById("message").style.display = "block";
-}
+    function restartGame() {
+        gameScreen.style.display = 'none';
+        levelSelectionScreen.style.display = 'block';
+        resetGame();
+    }
 
-// Example to trigger the end of the game (use your own logic here):
-// Simulating a win after 2 seconds
-setTimeout(() => {
-    endGame(true); // Call endGame() with `true` for a win
-}, 2000);
+    function exitGame() {
+        welcomeScreen.style.display = 'block';
+        gameScreen.style.display = 'none';
+        resetGame();
+    }
 
-// Simulating a loss after 4 seconds
-setTimeout(() => {
-    endGame(false); // Call endGame() with `false` for a loss
-}, 4000);
+    function resetGame() {
+        incorrectGuesses = 0;
+        correctGuesses = 0;
+        matchedCards = [];
+        flippedCards = [];
+        gameBoard.innerHTML = '';
+        messageElement.textContent = '';
+        finalScore.textContent = '';
+        winFace.style.display = 'none';
+        loseFace.style.display = 'none';
+        restartButton.style.display = 'none';
+        exitButton.style.display = 'none';
+    }
+
+    function shuffleArray(arr) {
+        let shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+});

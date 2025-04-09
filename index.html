@@ -8,30 +8,40 @@
 </head>
 <body>
 
-    <!-- Start Screen with Floral Background -->
-    <div id="start-screen">
-        <h1>Welcome to My MemoGame!</h1>
-        <p>Match all pairs of cards before time runs out or you exceed the incorrect guess limit.</p>
-        <button id="start-btn">Start Game</button>
-    </div>
 
-   <!-- Game Screen -->
-   <div id="game-screen" style="display: none;">
-        <div id="timer">Timer: 00:00</div>
-        <div id="correct-guesses">Correct Guesses: 0</div>
-        <div id="incorrect-guesses">Incorrect Guesses: 0</div>
-        <div id="game-board" class="grid"></div>
-        <button id="restart-btn" style="display: none;">Restart</button>
-        <div id="message" style="display: none;"></div>
-        
-        <!-- Faces for Win/Loss -->
-        <img id="win-face" src="assets/images/happy.png" style="display: none; width: 100px;"/>
-        <img id="lose-face" src="assets/images/sad.png"  style="display: none; width: 100px;"/>
+<!-- Welcome Screen -->
+<div id="welcome-screen">
+    <h1>Welcome to the Memo Game!</h1>
+    <button id="start-btn">Start Game</button>
+</div>
 
-        <div id="game-over" style="display: none;">
+<!-- Level Selection Screen -->
+<div id="level-selection-screen" style="display:none;">
+    <h2>Select The Level</h2>
+    <button id="easy-btn">Easy</button>
+    <button id="medium-btn">Medium</button>
+    <button id="hard-btn">Hard</button>
+</div>
+
+<!-- Game Screen -->
+<div id="game-screen" style="display:none;">
+    <h2>Memo Game</h2>
+    <div id="timer">Timer: 60</div>
+    <div id="correct-guesses">Correct Guesses: 0</div>
+    <div id="incorrect-guesses">Incorrect Guesses: 0</div>
+    <div id="game-board"></div>
+    <div id="message"></div>
+    <div id="final-score"></div>
+    <div id="win-face" style="display:none;">😊</div>
+    <div id="lose-face" style="display:none;">😞</div>
+    <button id="restart-btn" style="display:none;">Restart</button>
+    <button id="exit-btn" style="display:none;">Exit</button>
+</div>
+
+<!-- Game over Screen -->
+<div id="game-over" style="display: none;">
             <h1>Game Over!</h1>
             <p>Final Score: <span id="final-score"></span></p>
-            <button id="restart-btn2">Restart</button>
         </div>
     </div>
 
