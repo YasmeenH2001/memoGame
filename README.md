@@ -6,8 +6,7 @@ It’s a fun mental workout with a clean design and a bit of pressure (in a good
 
 ![Memo](https://github.com/user-attachments/assets/9724000b-7122-4633-9854-e65b119888ba)
 
-🚀 How to Play / Getting Started
-How it works:
+🚀 How to Play / How it works:
 
 You’ll see a grid of cards—all face-down.
 Click two cards to flip them over and try to find a match.
