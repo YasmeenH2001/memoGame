@@ -1,4 +1,6 @@
 
+import { cardValues } from 'js/data.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const welcomeScreen = document.getElementById('welcome-screen');
     const levelSelectionScreen = document.getElementById('level-selection-screen');
@@ -26,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let flippedCards = [];
     let matchedCards = [];
 
-    const cardValues = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🍑', '🥝', '🥥'];
 
     startButton.addEventListener('click', () => {
         welcomeScreen.style.display = 'none';

@@ -1,4 +1,5 @@
 # MemoGame: Concentration (Memory Game)
+
 🎮 What’s This Game About?
 MemoGame is a modern take on the classic memory card-matching game—also known as Concentration. The idea is simple but addictive: flip over cards, remember where everything is, and find all the matching pairs before time runs out or your guess limit hits zero.
 
@@ -20,6 +21,8 @@ Use the Restart button to try again, or hit Exit to go back to the welcome scree
 HTML
 CSS
 JavaScript
+
+
 
 
 🌟 Key Features
