@@ -22,10 +22,7 @@ HTML
 CSS
 JavaScript
 
-
-
-
-🌟 Key Features
+🌟 Key Features: 
 Clean, grid-based card layout.
 Match tracking with score updates.
 Countdown timer to keep things exciting.
