@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const welcomeScreen = document.getElementById('welcome-screen');
     const levelSelectionScreen = document.getElementById('level-selection-screen');
