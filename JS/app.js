@@ -1,6 +1,4 @@
 
-import { cardValues } from 'js/data.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const welcomeScreen = document.getElementById('welcome-screen');
     const levelSelectionScreen = document.getElementById('level-selection-screen');
@@ -17,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScore = document.getElementById('final-score');
     const correctGuessesElement = document.getElementById('correct-guesses');
     const incorrectGuessesElement = document.getElementById('incorrect-guesses');
+
+    const cardValues = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🍑', '🥝', '🥥'];
+
 
     let timer;
     let timeRemaining;
